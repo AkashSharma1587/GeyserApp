@@ -1,0 +1,6 @@
+apply plugin: 'idea'
+
+
+apply from: file("gradle/release.gradle")
+
+apply from: file("gradle/dropwizard.gradle")
