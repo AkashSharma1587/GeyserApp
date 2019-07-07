@@ -1,0 +1,38 @@
+databaseConfiguration:
+  maxWaitForConnection: 5s
+  password:
+  properties:
+    hibernate.session.events.log: false
+    hibernate.dialect: org.hibernate.dialect.MySQLDialect
+    charSet: UTF-8
+    hibernate.generate_statistics: false
+  driverClass: com.mysql.jdbc.Driver
+  validationInterval: 5s
+  user: root
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+  minIdleTime: 1 minute
+  url: jdbc:mysql://127.0.0.1/geyser_db?zeroDateTimeBehavior=convertToNull
+  checkConnectionWhileIdle: true
+  initialSize: 8
+  minSize: 8
+  maxSize: 1000
+server:
+  adminConnectors:
+  - type: http
+    port: 42141
+  requestLog:
+    timeZone: IST
+    appenders:
+    - timeZone: IST
+      threshold: ALL
+      logFormat: null
+      currentLogFilename: "/var/log/requests.log"
+      archivedFileCount: 25
+      type: file
+      archivedLogFilenamePattern: "requests-%d{yyyy-MM-dd-HH}.log.gz"
+      archive: true
+  minThreads: 100
+  maxThreads: 1000
+  applicationConnectors:
+  - type: http
+    port: 42140

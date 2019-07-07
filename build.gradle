@@ -26,7 +26,8 @@ subprojects {
             mavenCentral()
         }
 
-        compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion,
+        compile  'io.dropwizard:dropwizard-hibernate:' + dropwizardVersion,
+                'io.dropwizard:dropwizard-core:' + dropwizardVersion,
                 'io.dropwizard:dropwizard-testing:' + dropwizardVersion,
                 'io.dropwizard:dropwizard-metrics-graphite:' + dropwizardVersion
 
@@ -74,11 +75,6 @@ subprojects {
             exclude group: 'com.google.inject'
         }
 
-        testCompile group: 'junit', name: 'junit', version: '4.+'
-        testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '1.7.1'
-        testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.9'
-        testCompile group: 'org.hsqldb', name: 'hsqldb', version: '2.3.+'
-        testCompile group: 'org.easymock', name: 'easymock', version: '3.+'
     }
 
     task allDeps(type: DependencyReportTask) {}
@@ -147,73 +143,6 @@ project(":manager") {
 }
 
 
-
-subprojects {
-    configurations {
-        all*.exclude group: 'com.fasterxml.jackson.dataformat'
-        all*.exclude group: 'com.fasterxml.jackson.datatype'
-        all*.exclude group: 'com.fasterxml.jackson.module'
-        all*.exclude group: 'com.restbus', module: 'dropwizard-hibernate-plugin'
-        all*.exclude group: 'com.sun.jersey.contribs'
-        all*.exclude group: 'com.sun.jersey.jersey-test-framework'
-        all*.exclude group: 'javassist', module: 'javassist'
-        all*.exclude group: 'log4j', module: 'log4j'
-        all*.exclude group: 'org.codehaus.jackson'
-        all*.exclude group: 'org.jadira.usertype', module: 'usertype.jodatime'
-        all*.exclude group: 'org.slf4j', module: 'log4j-over-slf4j'
-        all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-        all*.exclude group: 'org.slf4j', module: 'slf4j-simple'
-        all*.exclude group: 'org.testng', module: 'testng'
-    }
-
-    sourceSets.main.output.resourcesDir = sourceSets.main.output.classesDir
-
-    jar {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    }
-}
-
 apply from: file("gradle/common.gradle")
 
-//import org.gradle.api.plugins.shadow.transformers.AppendingTransformer
-
-project(":manager") {
-
-    /*
-    apply plugin: 'shadow'
-    shadow {
-
-        transformer(AppendingTransformer) {
-            resource = 'META-INF/services/javax.persistence.spi.PersistenceProvider'
-        }
-        transformer(AppendingTransformer) {
-            resource = 'META-INF/services/javax.ws.rs.ext.MessageBodyWriter'
-        }
-        transformer(AppendingTransformer) {
-            resource = 'META-INF/services/javax.ws.rs.ext.MessageBodyReader'
-        }
-
-        exclude 'META-INF/*.DSA'
-        exclude 'META-INF/*.RSA'
-
-    }
-    */
-}
-
-apply plugin: 'dropwizard-debian'
-
-dropwizardDebian {
-    adminPort = 42121
-    jmxPort = 42122
-    zip64 = true
-    applicationName = "geyser-app"
-    parentProject = "manager"
-    javaOpts = "-Xms6g -Xmx6g -Xss512k -XX:NewRatio=1 -XX:+UseConcMarkSweepGC -XX:SurvivorRatio=4 " +
-            "-XX:CompileThreshold=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps " +
-            "-Xloggc:/var/log/flipkart/sp/fk-ws-mediator/gc.log -XX:+CMSClassUnloadingEnabled"
-    jreVersion = "8"
-    shadowVersion = '4.0.3'
-    enableLogAggregation = true
-    enableConfigService = true
-}
 
