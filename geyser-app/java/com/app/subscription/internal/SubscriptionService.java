@@ -1,7 +1,9 @@
 package com.app.subscription.internal;
 
+import com.app.subscription.model.Subscription;
+
 public interface SubscriptionService {
-    public boolean createSubscription(String userId);
+    public Subscription createSubscription(String userId);
 
     public boolean completeSubscription(String userId);
 }

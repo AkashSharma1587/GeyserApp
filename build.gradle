@@ -85,15 +85,8 @@ task createWrapper(type: Wrapper) {
     gradleVersion = '2.9'
 }
 
-project(":billing"){
 
-}
-
-project(":healthcheck"){
-
-}
-
-project(":subscription"){
+project(":geyser-app"){
 
 }
 
@@ -112,18 +105,9 @@ buildscript {
 }
 
 
-
-
-
-
-
-project(":manager") {
+project(":geyser-manager") {
     dependencies {
-        compile project(':subscription')
-        compile project(':billing')
-        compile project(':healthcheck')
-
-
+        compile project(':geyser-app')
     }
 
     apply plugin: 'java'

@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.app.subscription.model.Subscription;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 
 import java.util.Optional;
@@ -22,17 +23,24 @@ public class SubscriptionRepositoryImpl extends AbstractDAO<Subscription>
 
     @Override
     public Optional<Subscription> getActiveSubscription(String userId) {
-        Optional<Subscription> result = Optional.empty();
-        return result;
+        Subscription subscription = (Subscription) criteria()
+                .add(Restrictions.eq("userId", userId))
+                .add(Restrictions.eq("endTime", null))
+                .uniqueResult();
+        return Optional.ofNullable(subscription);
     }
 
     @Override
-    public boolean createSubscription(String userId, DateTime startTime) {
-        return false;
+    public Optional<Subscription> createSubscription(String userId, DateTime startTime) {
+        Subscription subscription = Subscription.builder().userId(userId).startTime(startTime).build();
+        persist(subscription);
+        return Optional.ofNullable(subscription);
     }
 
     @Override
     public boolean completeSubscription(Subscription subscription, DateTime endTime) {
-        return false;
+        subscription.setEndTime(endTime);
+        persist(subscription);
+        return true;
     }
 }

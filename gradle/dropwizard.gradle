@@ -1,4 +1,4 @@
-project(":manager") {
+project(":geyser-manager") {
 
     task(runService, dependsOn: 'classes', type: JavaExec) {
         main = mainClassName

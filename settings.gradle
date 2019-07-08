@@ -1,7 +1,5 @@
 rootProject.name = 'geyser'
 
-include 'manager',
-        'billing',
-        'healthcheck',
-        'subscription'
+include 'geyser-manager',
+        'geyser-app'
 

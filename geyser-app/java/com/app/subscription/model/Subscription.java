@@ -1,5 +1,6 @@
 package com.app.subscription.model;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
 @Table(name = "subscription")
 @NamedQuery(name = "Subscription.findAll", query = "select x from Subscription x")
 public class Subscription {

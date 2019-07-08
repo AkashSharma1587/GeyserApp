@@ -1,5 +1,8 @@
 package com.app.resources;
 
+import com.app.subscription.internal.*;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -9,6 +12,11 @@ import javax.ws.rs.core.MediaType;
 @Slf4j
 @Produces(MediaType.APPLICATION_JSON)
 public class SubscriptionResource {
+
+    @Inject
+    public SubscriptionResource(Provider<SubscriptionService> subscriptionServiceProvider){
+        this.subscriptionServiceProvider = subscriptionServiceProvider;
+    }
     /**
      *
      * @param userId id of the user who wants to subscribe to Geyser services
@@ -18,17 +26,14 @@ public class SubscriptionResource {
     @Path("/subscribe/user/{user_id}")
     @POST
     public boolean subscribe(@QueryParam("user_id") String userId){
-
-        return false;
+        return subscriptionServiceProvider.get().createSubscription(userId);
     }
 
 
     @Path("/unsubscribe/user/{user_id}")
     @POST
     public boolean unsubscribe(@QueryParam("user_id") String userId){
-
-
-        return false;
+        return subscriptionServiceProvider.get().completeSubscription(userId);
     }
 
 

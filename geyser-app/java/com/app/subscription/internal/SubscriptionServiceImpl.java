@@ -1,6 +1,7 @@
 package com.app.subscription.internal;
 
 import com.app.exception.BaseException;
+import com.app.healthcheck.GeyserHealthMonitor;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.app.subscription.model.Subscription;
@@ -22,11 +23,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public boolean createSubscription(String userId) {
+    public Subscription createSubscription(String userId) {
         //Check if there is an existing active subscription
         //If active subscription present, return false
         //Else create new subscription
-        //   Add a UserObserver instance to the subscriber's list for GeyserHealthMonitor
+        //   Add a GeyserObserver instance to the subscriber's list for GeyserHealthMonitor
         //   Return true
 
         SubscriptionRepository subscriptionRepository = subscriptionRepositoryProvider.get();
@@ -39,11 +40,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
         else{
             DateTime now = DateTime.now();
-            boolean isSubscriptionCreationSuccess =
-                    subscriptionRepository.createSubscription(userId, now);
-            if(isSubscriptionCreationSuccess){
+            Optional<Subscription> subscriptionOp = subscriptionRepository.createSubscription(userId, now);
+            if(subscriptionOp.isPresent()){
                 log.info("A new subscription created for user : "+userId);
-                return true;
+                Subscription subscription = subscriptionOp.get();
+                GeyserHealthMonitor
+
+                return subscription;
             }
             else{
                 throw new BaseException(Response.Status.INTERNAL_SERVER_ERROR, "Error occurred while creating new subscription. Please retry");
@@ -57,7 +60,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public boolean completeSubscription(String userId) {
         // CHeck if there is an existing active subscription
         // If yes,
-        //       Remove the UserObserver instance attached to GeyserHealthMonitor
+        //       Remove the GeyserObserver instance attached to GeyserHealthMonitor
         //       Update the subscription entity
         //       Return true
         // If No,
