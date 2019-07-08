@@ -4,12 +4,14 @@ import com.app.common.ObservedSubject;
 import com.app.common.Observer;
 import com.app.user.dto.GeyserObserver;
 import com.app.user.dto.GeyserUpdate;
+import com.google.inject.Singleton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
 public class GeyserHealthMonitor implements ObservedSubject {
+
 
     private final List<Observer> geyserObservers = new ArrayList<>();
 

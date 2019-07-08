@@ -2,6 +2,7 @@ package com.app.subscription.internal;
 
 import com.app.exception.BaseException;
 import com.app.healthcheck.GeyserHealthMonitor;
+import com.app.user.dto.GeyserObserver;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.app.subscription.model.Subscription;
@@ -16,10 +17,13 @@ import java.util.Optional;
 public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final Provider<SubscriptionRepository> subscriptionRepositoryProvider;
+    private final GeyserHealthMonitor geyserHealthMonitor;
 
     @Inject
-    public SubscriptionServiceImpl(Provider<SubscriptionRepository> subscriptionRepositoryProvider){
+    public SubscriptionServiceImpl(Provider<SubscriptionRepository> subscriptionRepositoryProvider,
+                                   GeyserHealthMonitor geyserHealthMonitor){
         this.subscriptionRepositoryProvider = subscriptionRepositoryProvider;
+        this.geyserHealthMonitor = geyserHealthMonitor;
     }
 
     @Override
@@ -44,7 +48,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             if(subscriptionOp.isPresent()){
                 log.info("A new subscription created for user : "+userId);
                 Subscription subscription = subscriptionOp.get();
-                GeyserHealthMonitor
+
+                //TODO Need a way to reserve this observer till the subscription exists
+                GeyserObserver observer = new GeyserObserver(geyserHealthMonitor);
+                geyserHealthMonitor.registerObserver(observer);
 
                 return subscription;
             }
