@@ -1,6 +1,7 @@
 package com.app.resources;
 
 import com.app.subscription.internal.*;
+import com.app.subscription.model.Subscription;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 @Slf4j
 @Produces(MediaType.APPLICATION_JSON)
 public class SubscriptionResource {
+
+    private final Provider<SubscriptionService> subscriptionServiceProvider;
 
     @Inject
     public SubscriptionResource(Provider<SubscriptionService> subscriptionServiceProvider){
@@ -25,7 +28,7 @@ public class SubscriptionResource {
 
     @Path("/subscribe/user/{user_id}")
     @POST
-    public boolean subscribe(@QueryParam("user_id") String userId){
+    public Subscription subscribe(@QueryParam("user_id") String userId){
         return subscriptionServiceProvider.get().createSubscription(userId);
     }
 

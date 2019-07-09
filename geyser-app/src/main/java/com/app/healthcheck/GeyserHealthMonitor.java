@@ -5,6 +5,7 @@ import com.app.common.Observer;
 import com.app.user.dto.GeyserObserver;
 import com.app.user.dto.GeyserUpdate;
 import com.google.inject.Singleton;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,9 @@ public class GeyserHealthMonitor implements ObservedSubject {
     public void notifyObservers() {
         //TODO Add condition to check geyser water level. If Geyser water level is 0, raise a GeyserUpdate()
         GeyserUpdate update = new GeyserUpdate();
+        update.setMessage("Water level 0");
+        update.setStatus("GEYSER_CANNOT_RUN");
+        update.setCreatedAt(DateTime.now());
         for(Observer o : geyserObservers){
             o.update(update);
         }

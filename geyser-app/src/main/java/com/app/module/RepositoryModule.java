@@ -1,5 +1,7 @@
 package com.app.module;
 
+import com.app.subscription.repository.SubscriptionRepository;
+import com.app.subscription.repository.SubscriptionRepositoryImpl;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -13,7 +15,7 @@ public class RepositoryModule<T extends Configuration> extends AbstractModule {
 
     @Override
     protected void configure() {
-
+        bind(SubscriptionRepository.class).to(SubscriptionRepositoryImpl.class);
     }
 
     public RepositoryModule(HibernateBundle<T> hibernate) {

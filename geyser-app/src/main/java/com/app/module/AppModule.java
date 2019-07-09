@@ -1,5 +1,6 @@
 package com.app.module;
 
+import com.app.subscription.internal.SubscriptionService;
 import com.app.subscription.repository.SubscriptionRepository;
 import com.app.subscription.repository.SubscriptionRepositoryImpl;
 import com.google.inject.AbstractModule;
@@ -7,6 +8,6 @@ import com.google.inject.AbstractModule;
 public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(SubscriptionRepository.class).to(SubscriptionRepositoryImpl.class);
+        bind(SubscriptionService.class).to((Class<? extends SubscriptionService>) SubscriptionRepositoryImpl.class);
     }
 }

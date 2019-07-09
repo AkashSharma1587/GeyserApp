@@ -29,10 +29,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public Subscription createSubscription(String userId) {
         //Check if there is an existing active subscription
-        //If active subscription present, return false
-        //Else create new subscription
-        //   Add a GeyserObserver instance to the subscriber's list for GeyserHealthMonitor
-        //   Return true
+        //If active subscription present, throw error
+        //   Else create new subscription
+        //       Add a GeyserObserver instance to the subscriber's list for GeyserHealthMonitor
+        //       Return newly created subscription
 
         SubscriptionRepository subscriptionRepository = subscriptionRepositoryProvider.get();
         Optional<Subscription> subscriptionOptional = subscriptionRepository.getActiveSubscription(userId);
@@ -77,11 +77,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Optional<Subscription> subscriptionOptional = subscriptionRepository.getActiveSubscription(userId);
         if(subscriptionOptional.isPresent()){
             DateTime endTime = DateTime.now();
-            subscriptionRepository.completeSubscription(subscriptionOptional.get(), endTime);
+            return subscriptionRepository.completeSubscription(subscriptionOptional.get(), endTime);
         } else{
             throw new BaseException(Response.Status.NOT_FOUND, "NO_ACTIVE_SUBSCRIPTION_FOUND",
                     "No active subscription found for deactivation for the user "+userId);
         }
-        return false;
     }
 }
